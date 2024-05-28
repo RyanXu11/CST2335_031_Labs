@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+// import 'package:cached_network_image/cached_network_image.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,7 +15,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'CST2335_031 Lab3 Demo',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -34,7 +35,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'CST2335_031 Lab3 Demo'),
     );
   }
 }
@@ -80,15 +81,15 @@ class _MyHomePageState extends State<MyHomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
-      // appBar: AppBar(
-      //   // TRY THIS: Try changing the color here to a specific color (to
-      //   // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-      //   // change color while the other colors stay the same.
-      //   backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-      //   // Here we take the value from the MyHomePage object that was created by
-      //   // the App.build method, and use it to set our appbar title.
-      //   title: Text(widget.title),
-      // ),
+      appBar: AppBar(
+        // TRY THIS: Try changing the color here to a specific color (to
+        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
+        // change color while the other colors stay the same.
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        // Here we take the value from the MyHomePage object that was created by
+        // the App.build method, and use it to set our appbar title.
+        title: Text(widget.title),
+      ),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
@@ -108,25 +109,25 @@ class _MyHomePageState extends State<MyHomePage> {
                 Stack (
                     alignment: AlignmentDirectional.center,
                     children: <Widget>[
-                      ClipOval(child: Image.asset("images/Beef.jpg", width: 110, height: 110, fit: BoxFit.cover),),
+                      ClipOval(child: Image.asset("images/Beef.jpg", width: 100, height: 100, fit: BoxFit.cover),),
                       Text("BEEF", style: TextStyle(fontSize: 15.0, color: Colors.white, fontWeight: FontWeight.bold),)
                 ]),
                 Stack (
                     alignment: AlignmentDirectional.center,
                     children: <Widget>[
-                      ClipOval(child: Image.asset("images/Chicken.jpg", width: 110, height: 110, fit: BoxFit.cover),),
+                      ClipOval(child: Image.asset("images/Chicken.jpg", width: 100, height: 100, fit: BoxFit.cover),),
                       Text("CHICKEN", style: TextStyle(fontSize: 15.0, color: Colors.white, fontWeight: FontWeight.bold),)
                 ]),
                 Stack (
                     alignment: AlignmentDirectional.center,
                     children: <Widget>[
-                      ClipOval(child: Image.asset("images/Pork.jpg", width: 110, height: 110, fit: BoxFit.cover),),
+                      ClipOval(child: Image.asset("images/Pork.jpg", width: 100, height: 100, fit: BoxFit.cover),),
                       Text("PORK", style: TextStyle(fontSize: 15.0, color: Colors.white, fontWeight: FontWeight.bold),)
                 ]),
                 Stack (
                     alignment: AlignmentDirectional.center,
                     children: <Widget>[
-                      ClipOval(child: Image.asset("images/Seafood.jpg", width: 110, height: 110, fit: BoxFit.cover),),
+                      ClipOval(child: Image.asset("images/Seafood.jpg", width: 100, height: 100, fit: BoxFit.cover),),
                       Text("SEAFOOD", style: TextStyle(fontSize: 15.0, color: Colors.white, fontWeight: FontWeight.bold),)
                 ]),
               ],
@@ -138,25 +139,25 @@ class _MyHomePageState extends State<MyHomePage> {
                 Stack (
                     alignment: AlignmentDirectional.bottomCenter,
                     children: <Widget>[
-                      ClipOval(child: Image.asset("images/MainDishes.jpg", width: 110, height: 110, fit: BoxFit.cover),),
+                      ClipOval(child: Image.asset("images/MainDishes.jpg", width: 100, height: 100, fit: BoxFit.cover),),
                       Text("Main Dishes", style: TextStyle(fontSize: 15.0, color: Colors.blue, fontWeight: FontWeight.bold),)
                     ]),
                 Stack (
                     alignment: AlignmentDirectional.bottomCenter,
                     children: <Widget>[
-                      ClipOval(child: Image.asset("images/Salad.jpg", width: 110, height: 110, fit: BoxFit.cover),),
+                      ClipOval(child: Image.asset("images/Salad.jpg", width: 100, height: 100, fit: BoxFit.cover),),
                       Text("Salad Recipes", style: TextStyle(fontSize: 15.0, color: Colors.blue, fontWeight: FontWeight.bold),)
                     ]),
                 Stack (
                     alignment: AlignmentDirectional.bottomCenter,
                     children: <Widget>[
-                      ClipOval(child: Image.asset("images/SideDishes.jpg", width: 110, height: 110, fit: BoxFit.cover),),
+                      ClipOval(child: Image.asset("images/SideDishes.jpg", width: 100, height: 100, fit: BoxFit.cover),),
                       Text("Side Dishes", style: TextStyle(fontSize: 15.0, color: Colors.blue, fontWeight: FontWeight.bold),)
                     ]),
                 Stack (
                     alignment: AlignmentDirectional.bottomCenter,
                     children: <Widget>[
-                      ClipOval(child: Image.asset("images/Crockpot.jpg", width: 110, height: 110, fit: BoxFit.cover),),
+                      ClipOval(child: Image.asset("images/Crockpot.jpg", width: 100, height: 100, fit: BoxFit.cover),),
                       Text("Crockpot", style: TextStyle(fontSize: 15.0, color: Colors.blue, fontWeight: FontWeight.bold),)
                     ]),
               ],
@@ -168,25 +169,25 @@ class _MyHomePageState extends State<MyHomePage> {
                 Column (
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      ClipOval(child: Image.asset("images/IceCream.jpg", width: 110, height: 110, fit: BoxFit.cover),),
+                      ClipOval(child: Image.asset("images/IceCream.jpg", width: 100, height: 100, fit: BoxFit.cover),),
                       Text("Ice Cream", style: TextStyle(fontSize: 15.0, color: Colors.black, fontWeight: FontWeight.bold),)
                     ]),
                 Column (
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      ClipOval(child: Image.asset("images/Brownies.jpg", width: 110, height: 110, fit: BoxFit.cover),),
+                      ClipOval(child: Image.asset("images/Brownies.jpg", width: 100, height: 100, fit: BoxFit.cover),),
                       Text("Brownies", style: TextStyle(fontSize: 15.0, color: Colors.black, fontWeight: FontWeight.bold),)
                     ]),
                 Column (
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      ClipOval(child: Image.asset("images/Pies.jpg", width: 110, height: 110, fit: BoxFit.cover),),
+                      ClipOval(child: Image.asset("images/Pies.jpg", width: 100, height: 100, fit: BoxFit.cover),),
                       Text("Pies", style: TextStyle(fontSize: 15.0, color: Colors.black, fontWeight: FontWeight.bold),)
                     ]),
                 Column (
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      ClipOval(child: Image.asset("images/Cookies.jpg", width: 110, height: 110, fit: BoxFit.cover),),
+                      ClipOval(child: Image.asset("images/Cookies.jpg", width: 100, height: 100, fit: BoxFit.cover),),
                       Text( "Cookies", style: TextStyle(fontSize: 15.0, color: Colors.black, fontWeight: FontWeight.bold),)
                     ]),
               ],
