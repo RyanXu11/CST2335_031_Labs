@@ -1,7 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-// import 'package:cached_network_image/cached_network_image.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,8 +11,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'CST2335_031 Lab3 Demo',
+      title: 'Flutter Demo',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -35,7 +31,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'CST2335_031 Lab3 Demo'),
+      home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
@@ -59,18 +55,47 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  // int _counter = 0;
+  late TextEditingController _loginController; // for user name text, initialize later, but not null
+  late TextEditingController _passwordController; // for password text, initialize later, but not null
+  static const String correctPassword = 'QWERTY123'; // The correct password
+  String _imagePath = 'images/question-mark.png';  // initialise the picture
 
-  void _incrementCounter() {
+  @override
+  void initState() {  //loading page, Initialize the controllers
+    super.initState();
+    _loginController = TextEditingController();
+    _passwordController = TextEditingController();
+  }
+
+  @override
+  void dispose() {  // unloading page, dispose the controllers to free up resources
+    _loginController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  // function for buttonClicked
+  void buttonClicked(){
+    var userTyped = _passwordController.value.text;
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
+      _imagePath = userTyped == correctPassword
+          ? 'images/idea.png'
+          : 'images/stop.png';
     });
   }
+
+
+  // void _incrementCounter() {
+  //   setState(() {
+  //     // This call to setState tells the Flutter framework that something has
+  //     // changed in this State, which causes it to rerun the build method below
+  //     // so that the display can reflect the updated values. If we changed
+  //     // _counter without calling setState(), then the build method would not be
+  //     // called again, and so nothing would appear to happen.
+  //     _counter++;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -94,104 +119,37 @@ class _MyHomePageState extends State<MyHomePage> {
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          // Column is also a layout widget. It takes a list of children and
+          // arranges them vertically. By default, it sizes itself to fit its
+          // children horizontally, and tries to be as tall as its parent.
+          //
+          // Column has various properties to control how it sizes itself and
+          // how it positions its children. Here we use mainAxisAlignment to
+          // center the children vertically; the main axis here is the vertical
+          // axis because Columns are vertical (the cross axis would be
+          // horizontal).
+          //
+          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
+          // action in the IDE, or press "p" in the console), to see the
+          // wireframe for each widget.
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text('BROWSE CATEGORIES',
-              style: TextStyle(fontSize: 20.0, color: Colors.black, fontWeight: FontWeight.bold),
-            ),
-            const Text("Not sure about exactly which recipe you're looking for? Do a search, or dive into our most popular categories.",
-                style: TextStyle(fontSize: 13.0, color: Colors.black)
-            ),
-            const Text('BY MEAT', style: TextStyle(fontSize: 16.0, color: Colors.black, fontWeight: FontWeight.bold)
-            ),
-            Row( mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                Stack (
-                    alignment: AlignmentDirectional.center,
-                    children: <Widget>[
-                      ClipOval(child: Image.asset("images/Beef.jpg", width: 100, height: 100, fit: BoxFit.cover),),
-                      Text("BEEF", style: TextStyle(fontSize: 15.0, color: Colors.white, fontWeight: FontWeight.bold),)
-                ]),
-                Stack (
-                    alignment: AlignmentDirectional.center,
-                    children: <Widget>[
-                      ClipOval(child: Image.asset("images/Chicken.jpg", width: 100, height: 100, fit: BoxFit.cover),),
-                      Text("CHICKEN", style: TextStyle(fontSize: 15.0, color: Colors.white, fontWeight: FontWeight.bold),)
-                ]),
-                Stack (
-                    alignment: AlignmentDirectional.center,
-                    children: <Widget>[
-                      ClipOval(child: Image.asset("images/Pork.jpg", width: 100, height: 100, fit: BoxFit.cover),),
-                      Text("PORK", style: TextStyle(fontSize: 15.0, color: Colors.white, fontWeight: FontWeight.bold),)
-                ]),
-                Stack (
-                    alignment: AlignmentDirectional.center,
-                    children: <Widget>[
-                      ClipOval(child: Image.asset("images/Seafood.jpg", width: 100, height: 100, fit: BoxFit.cover),),
-                      Text("SEAFOOD", style: TextStyle(fontSize: 15.0, color: Colors.white, fontWeight: FontWeight.bold),)
-                ]),
-              ],
-            ),
-            const Text('BY COURSE', style: TextStyle(fontSize: 16.0, color: Colors.black, fontWeight: FontWeight.bold)
-            ),
-            Row( mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                Stack (
-                    alignment: AlignmentDirectional.bottomCenter,
-                    children: <Widget>[
-                      ClipOval(child: Image.asset("images/MainDishes.jpg", width: 100, height: 100, fit: BoxFit.cover),),
-                      Text("Main Dishes", style: TextStyle(fontSize: 15.0, color: Colors.blue, fontWeight: FontWeight.bold),)
-                    ]),
-                Stack (
-                    alignment: AlignmentDirectional.bottomCenter,
-                    children: <Widget>[
-                      ClipOval(child: Image.asset("images/Salad.jpg", width: 100, height: 100, fit: BoxFit.cover),),
-                      Text("Salad Recipes", style: TextStyle(fontSize: 15.0, color: Colors.blue, fontWeight: FontWeight.bold),)
-                    ]),
-                Stack (
-                    alignment: AlignmentDirectional.bottomCenter,
-                    children: <Widget>[
-                      ClipOval(child: Image.asset("images/SideDishes.jpg", width: 100, height: 100, fit: BoxFit.cover),),
-                      Text("Side Dishes", style: TextStyle(fontSize: 15.0, color: Colors.blue, fontWeight: FontWeight.bold),)
-                    ]),
-                Stack (
-                    alignment: AlignmentDirectional.bottomCenter,
-                    children: <Widget>[
-                      ClipOval(child: Image.asset("images/Crockpot.jpg", width: 100, height: 100, fit: BoxFit.cover),),
-                      Text("Crockpot", style: TextStyle(fontSize: 15.0, color: Colors.blue, fontWeight: FontWeight.bold),)
-                    ]),
-              ],
-            ),
-            const Text('BY DESSERT', style: TextStyle(fontSize: 16.0, color: Colors.black, fontWeight: FontWeight.bold)
-            ),
-            Row( mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                Column (
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      ClipOval(child: Image.asset("images/IceCream.jpg", width: 100, height: 100, fit: BoxFit.cover),),
-                      Text("Ice Cream", style: TextStyle(fontSize: 15.0, color: Colors.black, fontWeight: FontWeight.bold),)
-                    ]),
-                Column (
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      ClipOval(child: Image.asset("images/Brownies.jpg", width: 100, height: 100, fit: BoxFit.cover),),
-                      Text("Brownies", style: TextStyle(fontSize: 15.0, color: Colors.black, fontWeight: FontWeight.bold),)
-                    ]),
-                Column (
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      ClipOval(child: Image.asset("images/Pies.jpg", width: 100, height: 100, fit: BoxFit.cover),),
-                      Text("Pies", style: TextStyle(fontSize: 15.0, color: Colors.black, fontWeight: FontWeight.bold),)
-                    ]),
-                Column (
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      ClipOval(child: Image.asset("images/Cookies.jpg", width: 100, height: 100, fit: BoxFit.cover),),
-                      Text( "Cookies", style: TextStyle(fontSize: 15.0, color: Colors.black, fontWeight: FontWeight.bold),)
-                    ]),
-              ],
-            ),
+            TextField(controller: _loginController,
+                decoration: InputDecoration(
+                  hintText:"Login",
+                  border: OutlineInputBorder(),
+                  labelText: "Login",
+                )),
+            TextField(controller: _passwordController,
+                obscureText: true,
+                decoration: InputDecoration(
+                  hintText: "Password",
+                  border: OutlineInputBorder(),
+                  labelText: "Password",
+                )),
+            ElevatedButton(onPressed: buttonClicked,  // Lambda function, anonymous function
+                child: Text("Login")),
+            Image.asset(_imagePath, width:300.0, height:300.0),
           ],
         ),
       ),
