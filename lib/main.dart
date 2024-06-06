@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:encrypted_shared_preferences/encrypted_shared_preferences.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -11,6 +14,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         // This is the theme of your application.
@@ -31,7 +35,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'Lab 4 By Ryan Xu'),
     );
   }
 }
@@ -61,12 +65,97 @@ class _MyHomePageState extends State<MyHomePage> {
   static const String correctPassword = 'QWERTY123'; // The correct password
   String _imagePath = 'images/question-mark.png';  // initialise the picture
 
+  late EncryptedSharedPreferences storedData = EncryptedSharedPreferences();
+  // final SharedPreferences storedData = await SharedPreferences.getInstance(); // await
+  String fieldUserName = 'UserName';  // fieldname for 'UserName'
+  String fieldPassword = 'Password';  // fieldname for 'Password'
+
   @override
   void initState() {  //loading page, Initialize the controllers
     super.initState();
     _loginController = TextEditingController();
     _passwordController = TextEditingController();
+    // storedData = EncryptedSharedPreferences();
+
+    loadSavedData();
   }
+
+  // This function is used to load saved data
+  void loadSavedData() async{
+    // Retrieving username and password
+    // final savedUserName = storedData.getString(fieldUserName);
+    // if (savedUserName != null && savedUserName.isNotEmpty) {
+    //     _loginController.text = savedUserName;
+    //   }
+    String message = 'Previous login name and passwords have been loaded.';
+    String label = 'Clear the data?';
+    int duration = 5;
+
+    storedData.getString(fieldUserName).then((savedUserName) {
+      if (savedUserName  != null && savedUserName .isNotEmpty)  {
+        _passwordController.text = savedUserName;
+        showSnackBarClearData(context, message, label, duration);
+      }
+    });
+
+    storedData.getString(fieldPassword).then((savedPassword) {
+      if (savedPassword  != null && savedPassword .isNotEmpty)  {
+        _passwordController.text = savedPassword;
+        showSnackBarClearData(context, message, label, duration);
+      }
+    });
+  }
+
+
+  // This function is used to save data to storedData (encrypted_shared_preferences)
+  void saveData() {
+    var userTyped1 = _loginController.value.text;
+    var userTyped2 = _passwordController.value.text;
+    if (userTyped1.isEmpty || userTyped2.isEmpty) {
+      // Show a Snackbar with a warning
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Username or password cannot be empty.'))
+      );
+    } else {
+      storedData.setString(fieldUserName, userTyped1).then((bool success){
+        if (success) {
+          print('save success!');
+        } else {
+          print('save fail');
+        }
+      }); // use then to avoid save failure
+      storedData.setString(fieldPassword, userTyped2).then((bool success){
+        if (success) { print('save success!');} else {print('save fail');}
+      });
+    }
+  }
+
+  // This function is used to clear storedData and
+  void clearData() {
+    _loginController.text = '';
+    _passwordController.text = '';
+    storedData.remove(fieldUserName).then((bool success){
+      if (success) { print('remove success!');} else {print('remove fail');}
+    }); // use then to avoid save failure
+    storedData.remove(fieldPassword);
+  }
+
+  // This function is used to show SnackBar
+  void showSnackBarClearData(BuildContext context, String message, String label, int duration) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        duration: Duration(seconds: duration),  // Set duration
+        action: SnackBarAction(
+            label: label,
+            onPressed: () {
+              clearData();
+            }
+        ),
+      ),
+    );
+  }
+
 
   @override
   void dispose() {  // unloading page, dispose the controllers to free up resources
@@ -77,12 +166,39 @@ class _MyHomePageState extends State<MyHomePage> {
 
   // function for buttonClicked
   void buttonClicked(){
-    var userTyped = _passwordController.value.text;
+    var userTyped2 = _passwordController.value.text;
     setState(() {
-      _imagePath = userTyped == correctPassword
+      _imagePath = userTyped2 == correctPassword
           ? 'images/idea.png'
           : 'images/stop.png';
     });
+
+    showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: const Text('Save data'),
+        content: const Text('Do you want to save your information?'),
+        actions: <Widget>[
+          ElevatedButton(
+            child:Text("Ok"),
+            onPressed: () {
+              saveData();
+              Navigator.pop(context);
+            },
+          ),
+          ElevatedButton( //ElevatedButton or FilledButton or OutlineButton or TextButton
+            child: Text("No"),
+            onPressed: () {
+              clearData();
+              Navigator.pop(context);
+            },
+          // FilledButton(onPressed: (){ Navigator.pop(context);}, child: Text("Cancel")),
+          // OutlinedButton(onPressed: (){ Navigator.pop(context);}, child: Text("Delete")),
+          // Image.asset("images/algonquin.jpg", width:100, height: 100),
+          ),
+        ],
+      ),
+    );
   }
 
 
@@ -118,6 +234,7 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
+        child: SingleChildScrollView(
         child: Column(
           // Column is also a layout widget. It takes a list of children and
           // arranges them vertically. By default, it sizes itself to fit its
@@ -134,13 +251,15 @@ class _MyHomePageState extends State<MyHomePage> {
           // wireframe for each widget.
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            TextField(controller: _loginController,
+            TextField(
+                controller: _loginController,
                 decoration: InputDecoration(
                   hintText:"Login",
                   border: OutlineInputBorder(),
                   labelText: "Login",
                 )),
-            TextField(controller: _passwordController,
+            TextField(
+                controller: _passwordController,
                 obscureText: true,
                 decoration: InputDecoration(
                   hintText: "Password",
@@ -149,10 +268,10 @@ class _MyHomePageState extends State<MyHomePage> {
                 )),
             ElevatedButton(onPressed: buttonClicked,  // Lambda function, anonymous function
                 child: Text("Login")),
-            Image.asset(_imagePath, width:300.0, height:300.0),
+            Image.asset(_imagePath, width:200.0, height:200.0),
           ],
         ),
       ),
-    );
+    ),);
   }
 }
