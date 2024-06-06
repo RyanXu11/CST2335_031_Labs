@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
 import 'package:encrypted_shared_preferences/encrypted_shared_preferences.dart';
 
 
@@ -92,14 +92,14 @@ class _MyHomePageState extends State<MyHomePage> {
     int duration = 5;
 
     storedData.getString(fieldUserName).then((savedUserName) {
-      if (savedUserName  != null && savedUserName .isNotEmpty)  {
+      if (savedUserName.isNotEmpty)  {
         _passwordController.text = savedUserName;
         showSnackBarClearData(context, message, label, duration);
       }
     });
 
     storedData.getString(fieldPassword).then((savedPassword) {
-      if (savedPassword  != null && savedPassword .isNotEmpty)  {
+      if (savedPassword .isNotEmpty)  {
         _passwordController.text = savedPassword;
         showSnackBarClearData(context, message, label, duration);
       }
