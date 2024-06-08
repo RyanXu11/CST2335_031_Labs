@@ -1,3 +1,5 @@
+import 'ProfilePage.dart';
+import 'repository.dart';
 import 'package:flutter/material.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
 import 'package:encrypted_shared_preferences/encrypted_shared_preferences.dart';
@@ -16,7 +18,19 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
+      home: const MyHomePage(title: 'Lab 5 By Ryan Xu'),
+      routes: {
+         // name        : Constructor for pages
+        '/ProfilePage'  : (context) => ProfilePage(),
+        '/Homepage' : (context) => MyHomePage(title:'Lab 5 Homepage By Ryan Xu')  // can't use '/'
+      },
+      initialRoute: '/Homepage' , //initial is the homepage, '/' can't be used
       theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
+      ),
+
+      // theme: ThemeData(
         // This is the theme of your application.
         //
         // TRY THIS: Try running your application with "flutter run". You'll see
@@ -32,11 +46,9 @@ class MyApp extends StatelessWidget {
         //
         // This works for code too, not just values: Most code changes can be
         // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const MyHomePage(title: 'Lab 4 By Ryan Xu'),
-    );
+        // colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        // useMaterial3: true,
+      );
   }
 }
 
@@ -67,7 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   late EncryptedSharedPreferences storedData = EncryptedSharedPreferences();
   // final SharedPreferences storedData = await SharedPreferences.getInstance(); // await
-  String fieldUserName = 'UserName';  // fieldname for 'UserName'
+  String fieldUserName = 'loginName';  // fieldname for 'UserName'
   String fieldPassword = 'Password';  // fieldname for 'Password'
 
   @override
@@ -77,7 +89,8 @@ class _MyHomePageState extends State<MyHomePage> {
     _passwordController = TextEditingController();
     // storedData = EncryptedSharedPreferences();
 
-    loadSavedData();
+    // loadSavedData();
+    DataRepository.loadData();
   }
 
   // This function is used to load saved data
@@ -156,49 +169,66 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-
   @override
   void dispose() {  // unloading page, dispose the controllers to free up resources
     _loginController.dispose();
     _passwordController.dispose();
     super.dispose();
+    //save DataRepository
+    DataRepository.saveData();
   }
 
   // function for buttonClicked
   void buttonClicked(){
+    var loginName = _loginController.value.text;
     var userTyped2 = _passwordController.value.text;
-    setState(() {
-      _imagePath = userTyped2 == correctPassword
-          ? 'images/idea.png'
-          : 'images/stop.png';
-    });
 
-    showDialog<String>(
-      context: context,
-      builder: (BuildContext context) => AlertDialog(
-        title: const Text('Save data'),
-        content: const Text('Do you want to save your information?'),
-        actions: <Widget>[
-          ElevatedButton(
-            child:Text("Ok"),
-            onPressed: () {
-              saveData();
-              Navigator.pop(context);
-            },
-          ),
-          ElevatedButton( //ElevatedButton or FilledButton or OutlineButton or TextButton
-            child: Text("No"),
-            onPressed: () {
-              clearData();
-              Navigator.pop(context);
-            },
-          // FilledButton(onPressed: (){ Navigator.pop(context);}, child: Text("Cancel")),
-          // OutlinedButton(onPressed: (){ Navigator.pop(context);}, child: Text("Delete")),
-          // Image.asset("images/algonquin.jpg", width:100, height: 100),
-          ),
-        ],
-      ),
-    );
+    if (userTyped2 == correctPassword) {
+      _imagePath = 'images/idea.png';
+      // Navigate to ProfilePage
+      // DataRepository.saveLoginName(loginName);
+      DataRepository.saveData();
+      Navigator.pushNamed(context,'/ProfilePage');
+    } else {
+      'images/stop.png';
+      showDialog<String>(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: const Text('Error'),
+          content: const Text('UserName or Password are incorrect.'),
+          actions: <Widget>[
+            ElevatedButton(
+              child:Text("Ok"),
+              onPressed: () {
+                // saveData();
+                Navigator.pop(context);  // or Navigator.of(context).pop();
+              },
+            ),
+            // ElevatedButton( //ElevatedButton or FilledButton or OutlineButton or TextButton
+            //   child: Text("No"),
+            //   onPressed: () {
+            //     clearData();
+            //     Navigator.pop(context);
+            //   },
+            //   // FilledButton(onPressed: (){ Navigator.pop(context);}, child: Text("Cancel")),
+            //   // OutlinedButton(onPressed: (){ Navigator.pop(context);}, child: Text("Delete")),
+            //   // Image.asset("images/algonquin.jpg", width:100, height: 100),
+            // ),
+          ],
+        ),
+      );
+
+
+    }
+
+    // setState(() {
+    //   _imagePath = userTyped2 == correctPassword
+    //       ? 'images/idea.png'
+    //       : 'images/stop.png';
+    // });
+
+
+
   }
 
 
