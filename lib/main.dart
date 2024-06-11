@@ -90,8 +90,8 @@ class _MyHomePageState extends State<MyHomePage> {
     // storedData = EncryptedSharedPreferences();
 
     // loadSavedData();
-    repository.saveLoginName(_loginController.text);
-    // repository.loginName = _loginController.text;
+    // repository.saveLoginName(_loginController.text);
+    repository.loginName = _loginController.text;
     repository.loadData();
   }
 
@@ -191,8 +191,8 @@ class _MyHomePageState extends State<MyHomePage> {
     if (userTyped2 == correctPassword) {
       _imagePath = 'images/idea.png';
       // Navigate to ProfilePage
-      repository.saveLoginName(loginName);  // Method 1
-      // repository.loginName = _loginController.text; // Method 2, repository class
+      // repository.saveLoginName(loginName);  // Method 1
+      repository.loginName = _loginController.text; // Method 2, repository class
       // repository.saveData();    // Method 3, local saveData() function?
       Navigator.pushNamed(context,'/ProfilePage');
     } else {
