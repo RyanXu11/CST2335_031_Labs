@@ -43,7 +43,7 @@ class ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       var snackBar = SnackBar(
-        content: Text('Welcome Back ' + DataRepository.loginName + '!'),
+        content: Text('Welcome Back ' + repository.loginName + '!'),
         duration: Duration(seconds: 7),
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -100,7 +100,7 @@ class ProfilePageState extends State<ProfilePage> {
                     flex: 1,
                     child: IconButton(
                       onPressed: () {
-                        _makePhoneCall('+1-613-297-7277');
+                        _makePhoneCall(_phoneController.value.text);
                       },
                       icon: Icon(Icons.phone),
                     ),
@@ -109,7 +109,7 @@ class ProfilePageState extends State<ProfilePage> {
                     flex: 1,
                     child: IconButton(
                       onPressed: () {
-                        _sendMessage('6132977277');
+                        _sendMessage(_phoneController.value.text);
                       },
                       icon: Icon(Icons.message),
                     ),
@@ -134,7 +134,7 @@ class ProfilePageState extends State<ProfilePage> {
                     flex: 1,
                     child: IconButton(
                       onPressed: () {
-                        _sendEmail('xu000310@algonquinlive.com');
+                        _sendEmail(_emailController.value.text);
                       },
                       icon: Icon(Icons.email),
                     ),
@@ -145,7 +145,7 @@ class ProfilePageState extends State<ProfilePage> {
                   onPressed: () {
                     Navigator.pop(context); // go back page one
                   },
-                  child: Text("Welcome "  + DataRepository.loginName),
+                  child: Text("Welcome "  + repository.loginName),
               ),
             ],),
         ),
@@ -154,32 +154,33 @@ class ProfilePageState extends State<ProfilePage> {
   }
 
   void _makePhoneCall(String phoneNumber) async {
-    final String url = 'tel:$phoneNumber';
+    final String url = "tel:"+ phoneNumber;
     try {
-      if (await canLaunch(url)) {
-        await launch(url);
-      } else {
-        throw 'Could not launch $url';
-      }
+      canLaunch(url).then((canMakePhoneCalls){
+        launch(url);
+      });
     } catch (e) {
       print('Error launching phone call: $e');
-      var snackBar = SnackBar(content: Text('Failed to make phone call.'));
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      // _showSnackBar('Failed to make phone call.');           // Use Snackbar
+      _showAlertDialog('That URL is not supported on this device.');  // Use AlertDialog
     }
   }
 
   void _sendMessage(String phoneNumber) async {
     final String url = 'sms:$phoneNumber';
     try {
-      if (await canLaunch(url)) {
-        await launch(url);
-      } else {
-        throw 'Could not launch $url';
-      }
+      canLaunch(url).then((canMakePhoneCalls){
+        launch(url);
+      });
+      // if (await canLaunch(url)) {
+      //   await launch(url);
+      // } else {
+      //   throw 'Could not launch $url';
+      // }
     } catch (e) {
       print('Error launching message: $e');
-      var snackBar = SnackBar(content: Text('Failed to send message.'));
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      // _showSnackBar('Failed to send SMS.');           // Use Snackbar
+      _showAlertDialog('That URL is not supported on this device.');  // Use AlertDialog
     }
   }
 
@@ -192,8 +193,32 @@ class ProfilePageState extends State<ProfilePage> {
       await launchUrl(emailFormat);
     } catch (e) {
       print('Error launching email: $e');
-      var snackBar = SnackBar(content: Text('Failed to send email.'));
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      _showSnackBar('Failed to send email.');    // Use Snackbar
+      _showAlertDialog('That URL is not supported on this device.');  // Use AlertDialog
     }
   }
+
+  void _showSnackBar(String message) {
+    var snackBar = SnackBar(content: Text(message));
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
+  void _showAlertDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: Text('Error'),
+        content: Text(message),
+        actions: <Widget>[
+          ElevatedButton(
+            child: Text("Ok"),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
 }

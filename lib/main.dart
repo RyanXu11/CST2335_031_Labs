@@ -90,7 +90,9 @@ class _MyHomePageState extends State<MyHomePage> {
     // storedData = EncryptedSharedPreferences();
 
     // loadSavedData();
-    DataRepository.loadData();
+    repository.saveLoginName(_loginController.text);
+    // repository.loginName = _loginController.text;
+    repository.loadData();
   }
 
   // This function is used to load saved data
@@ -120,28 +122,28 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
 
-  // This function is used to save data to storedData (encrypted_shared_preferences)
-  void saveData() {
-    var userTyped1 = _loginController.value.text;
-    var userTyped2 = _passwordController.value.text;
-    if (userTyped1.isEmpty || userTyped2.isEmpty) {
-      // Show a Snackbar with a warning
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Username or password cannot be empty.'))
-      );
-    } else {
-      storedData.setString(fieldUserName, userTyped1).then((bool success){
-        if (success) {
-          print('save success!');
-        } else {
-          print('save fail');
-        }
-      }); // use then to avoid save failure
-      storedData.setString(fieldPassword, userTyped2).then((bool success){
-        if (success) { print('save success!');} else {print('save fail');}
-      });
-    }
-  }
+  // // This function is used to save data to storedData (encrypted_shared_preferences)
+  // void saveData() {
+  //   var userTyped1 = _loginController.value.text;
+  //   var userTyped2 = _passwordController.value.text;
+  //   if (userTyped1.isEmpty || userTyped2.isEmpty) {
+  //     // Show a Snackbar with a warning
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //         SnackBar(content: Text('Username or password cannot be empty.'))
+  //     );
+  //   } else {
+  //     storedData.setString(fieldUserName, userTyped1).then((bool success){
+  //       if (success) {
+  //         print('save success!');
+  //       } else {
+  //         print('save fail');
+  //       }
+  //     }); // use then to avoid save failure
+  //     storedData.setString(fieldPassword, userTyped2).then((bool success){
+  //       if (success) { print('save success!');} else {print('save fail');}
+  //     });
+  //   }
+  // }
 
   // This function is used to clear storedData and
   void clearData() {
@@ -171,11 +173,14 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void dispose() {  // unloading page, dispose the controllers to free up resources
+    //save DataRepository
+    // var loginName = _loginController.value.text;
+    // repository.saveLoginName(loginName);
+    repository.saveData();
+
     _loginController.dispose();
     _passwordController.dispose();
     super.dispose();
-    //save DataRepository
-    DataRepository.saveData();
   }
 
   // function for buttonClicked
@@ -186,8 +191,9 @@ class _MyHomePageState extends State<MyHomePage> {
     if (userTyped2 == correctPassword) {
       _imagePath = 'images/idea.png';
       // Navigate to ProfilePage
-      // DataRepository.saveLoginName(loginName);
-      DataRepository.saveData();
+      repository.saveLoginName(loginName);  // Method 1
+      // repository.loginName = _loginController.text; // Method 2, repository class
+      // repository.saveData();    // Method 3, local saveData() function?
       Navigator.pushNamed(context,'/ProfilePage');
     } else {
       'images/stop.png';

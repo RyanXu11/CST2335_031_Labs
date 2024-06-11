@@ -4,7 +4,7 @@ import 'dart:async';
 
 import 'package:encrypted_shared_preferences/encrypted_shared_preferences.dart';
 
-class DataRepository{
+class repository{
 
   static String firstName = ""; //initially it's empty string
   static String lastName = "";
@@ -32,13 +32,13 @@ class DataRepository{
   {
     //save your variables
     var prefs = EncryptedSharedPreferences();
-    if (loginName!= null && loginName.isNotEmpty){
+    if (loginName.isNotEmpty){
       prefs.setString("loginName", loginName);
     }
-    if (firstName!= null && firstName.isNotEmpty){
+    if (firstName.isNotEmpty){
       prefs.setString("firstName", firstName);
     }
-    if (lastName!= null && lastName.isNotEmpty){
+    if (lastName.isNotEmpty){
       prefs.setString("lastName", lastName);
     }
   }
