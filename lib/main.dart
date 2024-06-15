@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
          // name        : Constructor for pages
         '/ProfilePage'  : (context) => ProfilePage(),
         '/Homepage' : (context) => MyHomePage(title:'Lab for Week 6 By Ryan Xu'),  // can't use '/'
-        '/toDoList' : (context) => toDoList(),
+        '/toDoList' : (context) => toDoList(), // The new page for lab 6
 
       },
       initialRoute: '/Homepage' , //initial is the homepage, '/' can't be used
