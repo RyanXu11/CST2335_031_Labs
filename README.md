@@ -25,6 +25,7 @@ You should add a Long-Press gesture detector which will bring up a dialog box as
 from the list. If the user selects "No", then nothing should change.
 
 If the number of items is empty, then you should instead show a Text saying "There are no items in the list".
-![image](https://github.com/RyanXu11/CST2335_031_Labs/assets/55840747/00ff0add-e358-4d4a-9a99-1bb9de63f338)
+
+<img src="https://github.com/RyanXu11/CST2335_031_Labs/assets/55840747/00ff0add-e358-4d4a-9a99-1bb9de63f338" alt="image" width="380" height="500">
 
 
