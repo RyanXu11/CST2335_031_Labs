@@ -18,11 +18,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      home: const MyHomePage(title: 'Lab for Week 6 By Ryan Xu'),
+      home: const MyHomePage(title: 'Lab 7 By Ryan Xu: Using SQL'),
       routes: {
          // name        : Constructor for pages
         '/ProfilePage'  : (context) => ProfilePage(),
-        '/Homepage' : (context) => MyHomePage(title:'Lab for Week 6 By Ryan Xu'),  // can't use '/'
+        '/Homepage' : (context) => MyHomePage(title:'Lab 7 By Ryan Xu: Using SQL'),  // can't use '/'
         '/toDoList' : (context) => toDoList(), // The new page for lab 6
 
       },
