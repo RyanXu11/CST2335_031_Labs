@@ -1,6 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'ToDoDAO.dart';
+import 'ToDoDatabase.dart';
+import 'ToDoItem.dart';
+
 class toDoList extends StatefulWidget {
   // final String loginName;
   // ProfilePage({Key? key, required this.loginName}) : super(key: key);
@@ -12,12 +16,25 @@ class toDoList extends StatefulWidget {
 
 class toDoListState extends State<toDoList> {
   late TextEditingController _controller;
-  var listObjects = <String> [] ;
+  // var listObjects = <String> [] ;
+  var words = <ToDoItem>[];
+  late ToDoDAO myDAO;
 
   @override
   void initState() {
     //loading page, Initialize the controllers
     super.initState();
+
+    $FloorToDoDatabase.databaseBuilder('app_database.db').build().then( (database) async {
+      myDAO = database.getDao; // now you can query;
+      // List<ToDoItem> items = await myDAO.getAllItems();
+      myDAO.getAllItems().then ( (listOfItems) {
+        setState(() {
+          words.addAll( listOfItems ); // add all items from listOfItems into words
+        });
+      });
+    });  // read the database
+
     _controller = TextEditingController();
   }
 
@@ -26,13 +43,13 @@ class toDoListState extends State<toDoList> {
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      var snackBar = SnackBar(
-        content: Text('Welcome to toDoList!' ),
-        duration: Duration(seconds: 7),
-      );
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   var snackBar = SnackBar(
+    //     content: Text('Welcome to toDoList!' ),
+    //     duration: Duration(seconds: 7),
+    //   );
+    //   ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    // });
     // returns how this looks on screen
     return Scaffold(
         // backgroundColor: Color(0xfef7ff),
@@ -48,9 +65,14 @@ class toDoListState extends State<toDoList> {
                 children: [
                   ElevatedButton(
                       onPressed: (){
-                        var whatWasTyped = _controller.value.text;
                         setState(() {
-                          listObjects.add(whatWasTyped); //insert to ArrayList
+                          var newItem = ToDoItem(ToDoItem.ID++, _controller.value.text);
+
+                          words.add(newItem);  // put it on the screen
+
+                          // add to the database:
+                          myDAO.insertItem(newItem);
+
                           // clear the text
                           _controller.text = "";
                         });
@@ -68,7 +90,7 @@ class toDoListState extends State<toDoList> {
                   ),
                   ),
                 ],),
-            if(listObjects.isEmpty)
+            if(words.isEmpty)
               Column(
                 children: [
                   SizedBox(height: 20), // Add some space above the Text
@@ -78,13 +100,14 @@ class toDoListState extends State<toDoList> {
             else
               Expanded(  // makes the child as large as possible, taking up whole screen
                 child:
-                ListView.builder( itemCount: listObjects.length,// length of array as row number
+                ListView.builder(
+                  itemCount: words.length,// length of array as row number
                   itemBuilder: (context, rowNumber) {
                     return
                       GestureDetector(
-                        child: Text(
-                            "Row ${rowNumber} : " + listObjects[rowNumber],
-                            style:TextStyle(fontSize: 25),
+                        child:
+                        Row( mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [Text("Row number: ${rowNumber}  "), Text(words[rowNumber].toDoMesage)]
                         ),
                         onLongPress: (){
                           showDialog(
@@ -105,11 +128,13 @@ class toDoListState extends State<toDoList> {
                                     onPressed: () {
                                       var snackBar = SnackBar(
                                         content: Text('Row: ${rowNumber} you tapped has been deleted.'),
-                                        duration: Duration(seconds: 1),
+                                        duration: Duration(seconds: 3),
                                       );
                                       ScaffoldMessenger.of(context).showSnackBar(snackBar);
                                       setState(() {
-                                        listObjects.removeAt(rowNumber); // Remove the object
+                                        var itm = words[rowNumber];
+                                        myDAO.deleteItem(itm);
+                                        words.removeAt(rowNumber); // it's gone after this line
                                       });
                                       Navigator.of(context).pop(); // Close the dialog
                                     },
