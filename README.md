@@ -1,6 +1,9 @@
-# lab3
+# lab 8, Jul 2024
+CST2355 Tablet layouts
 
-CST2335 Lab3, May 2024
+# lab3, May 2024
+
+CST2335 Lab3, 
 
 ## Getting Started
 
