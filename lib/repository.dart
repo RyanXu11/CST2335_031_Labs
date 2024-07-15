@@ -1,6 +1,5 @@
 
 //responsible for loading and saving itself
-import 'dart:async';
 
 import 'package:encrypted_shared_preferences/encrypted_shared_preferences.dart';
 

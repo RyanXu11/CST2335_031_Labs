@@ -1,6 +1,6 @@
 import 'ProfilePage.dart';
 import 'repository.dart';
-import 'toDoList.dart';
+import 'ToDoList.dart';
 import 'package:flutter/material.dart';
 import 'package:encrypted_shared_preferences/encrypted_shared_preferences.dart';
 
@@ -18,13 +18,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      home: const MyHomePage(title: 'Lab 7 By Ryan Xu: Using SQL'),
+      home: const MyHomePage(title: 'Lab 7 Using SQL, By Ryan Xu'),
       routes: {
          // name        : Constructor for pages
         '/ProfilePage'  : (context) => ProfilePage(),
-        '/Homepage' : (context) => MyHomePage(title:'Lab 7 By Ryan Xu: Using SQL'),  // can't use '/'
-        '/toDoList' : (context) => toDoList(), // The new page for lab 6
-
+        '/Homepage' : (context) => MyHomePage(title:'Lab 7 Using SQL, By Ryan Xu'),  // can't use '/'
+        '/ToDoList' : (context) => ToDoList(), // The new page for lab 6
       },
       initialRoute: '/Homepage' , //initial is the homepage, '/' can't be used
       theme: ThemeData(
@@ -83,7 +82,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   // function for buttonClicked
   void buttonClicked(){
-    var loginName = _loginController.value.text;
     var userTyped2 = _passwordController.value.text;
 
     if (userTyped2 == correctPassword) {
@@ -116,7 +114,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   // function for button2Clicked
   void button2Clicked(){
-    Navigator.pushNamed(context,'/toDoList');
+    Navigator.pushNamed(context,'/ToDoList');
   }
 
 
@@ -167,7 +165,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: Text("Login")),
                 // Spacer(flex: 1), // Add space between the buttons
                 ElevatedButton(onPressed: button2Clicked,  // Lambda function, anonymous function
-                    child: Text("toDoList Page")),
+                    child: Text("ToDoList Page")),
             ]),
             Image.asset(_imagePath, width:200.0, height:200.0),
           ],
